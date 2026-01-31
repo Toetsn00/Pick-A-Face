@@ -1,0 +1,25 @@
+{
+  "meta": {
+    "title": "Pick A Face - Random Face Picker",
+    "description": "Detect faces using face recognition and randomly select one face to zoom in on! | Random Picker, Face Recognition, Mini Game"
+  },
+  "header": {
+    "title": "Pick A Face",
+    "description": "Pick one person's face randomly from your image!"
+  },
+  "body": {
+    "title-upload": "Upload Image",
+    "description-upload": "Drag and drop an image here or upload by button below",
+    "title-loading": "Processing...",
+    "dragging-title": "Drag an image here!"
+  },
+  "button": {
+    "select": "Select Image",
+    "takepicture": "Take Picture",
+    "reroll": "Reroll",
+    "reset": "Reset"
+  },
+  "alert": {
+    "mobileOnly": "Taking pictures is only available on mobile devices :/"
+  }
+}

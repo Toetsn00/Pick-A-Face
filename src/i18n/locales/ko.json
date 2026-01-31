@@ -1,0 +1,25 @@
+{
+  "meta": {
+    "title": "Pick A Face - 얼굴인식 랜덤 뽑기, 무작위 추첨기",
+    "description": "얼굴인식 모델로 얼굴을 감지하고 무작위로 한 명을 뽑아 확대하세요! | 얼굴인식, 랜덤뽑기, 미니게임, 추첨기"
+  },
+  "header": {
+    "title": "Pick A Face",
+    "description": "얼굴인식 모델을 이용해 사진에서 무작위로 사람을 뽑으세요!"
+  },
+  "body": {
+    "title-upload": "이미지 업로드",
+    "description-upload": "이미지를 여기에 드래그하거나 아래 버튼으로 업로드",
+    "title-loading": "이미지 처리중...",
+    "dragging-title": "여기에 이미지를 드래그하세요!"
+  },
+  "button": {
+    "select": "이미지 선택",
+    "takepicture": "사진 찍기",
+    "reroll": "다시 뽑기",
+    "reset": "초기화"
+  },
+  "alert": {
+    "mobileOnly": "사진 촬영은 모바일에서만 지원됩니다 :/"
+  }
+}

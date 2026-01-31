@@ -7,6 +7,7 @@ import {
 } from "./Buttons";
 import { detectFaces } from "../utils/faceModel";
 import { resizeImage } from "../utils/imageUtil";
+import { useTranslation } from "react-i18next";
 
 const BodyFrame: React.FC = () => {
   const [userImgFile, setUserImgFile] = React.useState<File | null>(null);
@@ -132,6 +133,7 @@ interface UploadFrameProps {
 
 const UploadFrame: React.FC<UploadFrameProps> = ({ onFileSelect }) => {
   const [isDragging, setIsDragging] = React.useState(false);
+  const { t } = useTranslation();
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -165,9 +167,9 @@ const UploadFrame: React.FC<UploadFrameProps> = ({ onFileSelect }) => {
       {isDragging && <DraggingFrame />}
       <div className="imgBox-elementStack">
         <div className="imgBox-textStack">
-          <p className="imgBox-titleText">이미지 업로드</p>
+          <p className="imgBox-titleText">{t("body.title-upload")}</p>
           <p className="imgBox-titleText-description">
-            이미지를 여기에 드래그하거나 아래 버튼으로 업로드
+            {t("body.description-upload")}
           </p>
         </div>
         <div className="imgBox-buttonStack">
@@ -187,6 +189,7 @@ interface LoadingFrameProps {
 }
 
 const LoadingFrame: React.FC<LoadingFrameProps> = ({ backgroundImg }) => {
+  const { t } = useTranslation();
   return (
     <div
       className="imgBox"
@@ -200,7 +203,7 @@ const LoadingFrame: React.FC<LoadingFrameProps> = ({ backgroundImg }) => {
       <div className="dim" />
       <div className="imgBox-elementStack">
         <div className="imgBox-textStack">
-          <p className="imgBox-titleText">이미지 처리중...</p>
+          <p className="imgBox-titleText">{t("body.title-loading")}</p>
         </div>
       </div>
     </div>
@@ -244,10 +247,11 @@ const ResultFrame: React.FC<ResultFrameProps> = ({
 
 // #region DraggingFrame
 const DraggingFrame: React.FC = () => {
+  const { t } = useTranslation();
   return (
     <div className="dim" style={{ zIndex: 3 }}>
       <div className="imgBox-titleText" style={{ zIndex: 4 }}>
-        여기에 이미지를 드래그하세요!
+        {t("body.title-dragging")}
       </div>
     </div>
   );

@@ -1,12 +1,12 @@
-import HeaderFrame from "./components/HeaderFrame";
-import BodyFrame from "./components/BodyFrame";
-import FooterFrame from "./components/FooterFrame";
 import "./css/App.css";
 import "./css/HeaderFrame.css";
 import "./css/BodyFrame.css";
 import "./css/FooterFrame.css";
 import { loadModels } from "./utils/faceModel";
 import { useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import "./i18n";
 
 function App() {
   useEffect(() => {
@@ -14,11 +14,12 @@ function App() {
   }, []);
 
   return (
-    <div>
-      <HeaderFrame />
-      <BodyFrame />
-      <FooterFrame />
-    </div>
+    <Router basename={import.meta.env.BASE_URL}>
+      <Routes>
+        <Route path="/" element={<Home lang="en" />} />
+        <Route path="/ko" element={<Home lang="ko" />} />
+      </Routes>
+    </Router>
   );
 }
 

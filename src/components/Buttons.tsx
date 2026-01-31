@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import { useTranslation } from "react-i18next";
 
 interface SelectImgButtonProps {
   onFileSelect: (file: File) => void;
@@ -8,6 +9,7 @@ interface SelectImgButtonProps {
 export const SelectImgButton: React.FC<SelectImgButtonProps> = ({
   onFileSelect,
 }) => {
+  const { t } = useTranslation();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleButtonClick = () => {
@@ -23,7 +25,7 @@ export const SelectImgButton: React.FC<SelectImgButtonProps> = ({
   return (
     <>
       <button className="imgBox-button" onClick={handleButtonClick}>
-        <p className="imgBox-button-text">이미지 선택</p>
+        <p className="imgBox-button-text">{t("button.select")}</p>
       </button>
       <input
         type="file"
@@ -40,12 +42,13 @@ export const SelectImgButton: React.FC<SelectImgButtonProps> = ({
 export const CaptureImgButton: React.FC<SelectImgButtonProps> = ({
   onFileSelect,
 }) => {
+  const { t } = useTranslation();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
   const handleButtonClick = () => {
     if (!isMobile) {
-      alert("사진 촬영은 모바일에서만 지원됩니다 :/");
+      alert(t("alert.mobileOnly"));
       return;
     }
     fileInputRef.current?.click();
@@ -59,7 +62,7 @@ export const CaptureImgButton: React.FC<SelectImgButtonProps> = ({
   return (
     <>
       <button className="imgBox-button" onClick={handleButtonClick}>
-        <p className="imgBox-button-text">사진 찍기</p>
+        <p className="imgBox-button-text">{t("button.takepicture")}</p>
       </button>
 
       <input
@@ -83,11 +86,12 @@ export const ReloadButton: React.FC<ReloadButtonProps> = ({ onReroll }) => {
   const handleButtonClick = () => {
     onReroll();
   };
+  const { t } = useTranslation();
 
   return (
     <>
       <button className="imgBox-button" onClick={handleButtonClick}>
-        <p className="imgBox-button-text">다시 뽑기</p>
+        <p className="imgBox-button-text">{t("button.reroll")}</p>
       </button>
     </>
   );
@@ -102,11 +106,12 @@ export const ResetButton: React.FC<ResetButtonProps> = ({ onReset }) => {
   const handleButtonClick = () => {
     onReset();
   };
+  const { t } = useTranslation();
 
   return (
     <>
       <button className="imgBox-button" onClick={handleButtonClick}>
-        <p className="imgBox-button-text">초기화</p>
+        <p className="imgBox-button-text">{t("button.reset")}</p>
       </button>
     </>
   );

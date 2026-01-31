@@ -2,6 +2,7 @@
 :root {
   --title-font-size: 46px;
   --title-description-font-size: 26px;
+  --letter-spacing: -0.1px;
 }
 
 /* TABLET */
@@ -9,6 +10,7 @@
   :root {
     --title-font-size: 42px;
     --title-description-font-size: 23px;
+    --letter-spacing: -0.1px;
   }
 }
 
@@ -16,7 +18,8 @@
 @media (max-width: 600px) {
   :root {
     --title-font-size: 30px;
-    --title-description-font-size: 16px;
+    --title-description-font-size: 17px;
+    --letter-spacing: -0.1px;
   }
 }
 
@@ -30,7 +33,7 @@
   align-items: center;
   padding: 50px 20px 0px 20px;
   align-content: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .title {
@@ -41,6 +44,7 @@
   color: #4a80b5;
   text-align: center;
   transform: skewX(-15deg);
+  letter-spacing: var(--letter-spacing);
 }
 
 .title-description {
@@ -51,4 +55,5 @@
   color: #d1d1d1;
   text-align: center;
   transform: skewX(-15deg);
+  letter-spacing: var(--letter-spacing);
 }

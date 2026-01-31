@@ -4,11 +4,17 @@
   --elementstack-gap: 28px;
   --titleText-font-size: 28px;
   --titleText-description-font-size: 21px;
-  --button-width: 96px;
-  --button-height: 40px;
-  --button-text-font-size: 15px;
+  --button-width: 116px;
+  --button-height: 44px;
+  --button-text-font-size: 16px;
   --reloadUI-padding-bottom: 40px;
   --reloadUI-gap: 28px;
+  --letter-spacing: -0.1px;
+}
+
+html[data-lang="ko"] {
+  --button-width: 106px;
+  --button-height: 42px;
 }
 
 /* TABLET */
@@ -18,11 +24,17 @@
     --elementstack-gap: 24px;
     --titleText-font-size: 25px;
     --titleText-description-font-size: 19px;
-    --button-width: 96px;
-    --button-height: 40px;
+    --button-width: 116px;
+    --button-height: 44px;
     --button-text-font-size: 15px;
     --reloadUI-padding-bottom: 30px;
     --reloadUI-gap: 28px;
+    --letter-spacing: -0.1px;
+  }
+
+  html[data-lang="ko"] {
+    --button-width: 106px;
+    --button-height: 42px;
   }
 }
 
@@ -32,12 +44,18 @@
     --bodyframe-margin-rl: 24px;
     --elementstack-gap: 16px;
     --titleText-font-size: 19px;
-    --titleText-description-font-size: 14px;
-    --button-width: 86px;
+    --titleText-description-font-size: 15px;
+    --button-width: 92px;
     --button-height: 35px;
-    --button-text-font-size: 14px;
+    --button-text-font-size: 13px;
     --reloadUI-padding-bottom: 20px;
     --reloadUI-gap: 20px;
+    --letter-spacing: -0.1px;
+  }
+
+  html[data-lang="ko"] {
+    --button-width: 86px;
+    --button-height: 35px;
   }
 }
 
@@ -113,6 +131,7 @@
   color: #eaeaea;
   text-align: center;
   pointer-events: none;
+  letter-spacing: var(--letter-spacing);
 }
 
 .imgBox-titleText-description {
@@ -122,6 +141,7 @@
   font-weight: 400;
   color: #c9c9c9;
   text-align: center;
+  letter-spacing: var(--letter-spacing);
 }
 
 .imgBox-button {
@@ -129,7 +149,7 @@
   width: var(--button-width);
   height: var(--button-height);
   display: block;
-  border-radius: 20px;
+  border-radius: 30px;
   border: 1.5px solid #eaeaea;
   background-color: transparent;
   backdrop-filter: blur(1px);
@@ -149,6 +169,7 @@
   font-size: var(--button-text-font-size);
   font-weight: 500;
   text-align: center;
+  letter-spacing: var(--letter-spacing);
 }
 
 .dim {
