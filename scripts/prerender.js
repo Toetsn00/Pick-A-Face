@@ -1,71 +1,68 @@
 #!/usr/bin/env node
-import { spawn } from "child_process";
+import { createServer } from "vite";
 import http from "http";
 import fs from "fs";
 import path from "path";
 import puppeteer from "puppeteer";
 
-const PORT = process.env.PORT || 5000;
+const PORT = 5173;
 const HOST = `http://localhost:${PORT}`;
 const routes = ["/", "/ko/"];
-
-function waitForServer(url, timeout = 30000) {
-  return new Promise((resolve, reject) => {
-    const start = Date.now();
-    const check = () => {
-      http
-        .get(url, (res) => {
-          resolve();
-        })
-        .on("error", () => {
-          if (Date.now() - start > timeout) reject(new Error("timeout"));
-          else setTimeout(check, 500);
-        });
-    };
-    check();
-  });
-}
+const cwd = process.cwd();
 
 async function main() {
-  const server = spawn("npx", ["vite", "preview", "--port", String(PORT)], {
-    stdio: "ignore",
-  });
+  let server;
+  let httpServer;
   try {
-    console.log("Waiting for preview server...");
-    await waitForServer(HOST);
-    console.log("Preview server ready:", HOST);
+    console.log("Starting Vite dev server...");
+    server = await createServer({
+      root: cwd,
+      server: { middlewareMode: true },
+    });
+
+    const app = server.middlewares;
+    httpServer = http.createServer(app);
+
+    await new Promise((resolve) => {
+      httpServer.listen(PORT, () => {
+        console.log(`Server ready at ${HOST}`);
+        resolve();
+      });
+    });
 
     const browser = await puppeteer.launch({
+      headless: true,
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
     const page = await browser.newPage();
 
     for (const route of routes) {
-      const url = HOST.replace(/\/$/, "") + (route === "/" ? "/" : route);
+      const url = HOST + (route === "/" ? "/" : route);
       console.log("Rendering", url);
-      await page.goto(url, { waitUntil: "networkidle0" });
-      const html = await page.content();
-      const outDir = path.join(
-        process.cwd(),
-        "dist",
-        route === "/" ? "" : route.replace(/^\//, ""),
-      );
-      fs.mkdirSync(outDir, { recursive: true });
-      fs.writeFileSync(path.join(outDir, "index.html"), html, "utf8");
-      console.log("Wrote", path.join(outDir, "index.html"));
+      try {
+        await page.goto(url, { waitUntil: "networkidle2" });
+        const html = await page.content();
+        const outDir = path.join(
+          cwd,
+          "dist",
+          route === "/" ? "" : route.replace(/^\//, ""),
+        );
+        fs.mkdirSync(outDir, { recursive: true });
+        fs.writeFileSync(path.join(outDir, "index.html"), html, "utf8");
+        console.log("✓ Wrote", path.join(outDir, "index.html"));
+      } catch (e) {
+        console.error("✗ Failed to render", url, ":", e.message);
+      }
     }
 
     await browser.close();
-    console.log("Prerender complete.");
+    console.log("✓ Prerender complete.");
+    httpServer.close();
   } catch (e) {
-    console.error(e);
+    console.error("✗ Error:", e.message);
     process.exitCode = 1;
   } finally {
-    try {
-      server.kill();
-    } catch (e) {
-      /* ignore */
-    }
+    if (server) await server.close();
   }
 }
 
