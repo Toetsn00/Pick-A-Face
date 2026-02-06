@@ -1,34 +1,23 @@
 #!/usr/bin/env node
-import { createServer } from "vite";
-import http from "http";
 import fs from "fs";
 import path from "path";
 import puppeteer from "puppeteer";
+import { preview } from "vite";
 
-const PORT = 5173;
-const HOST = `http://localhost:${PORT}`;
 const routes = ["/", "/ko/"];
 const cwd = process.cwd();
 
 async function main() {
-  let server;
-  let httpServer;
+  let previewServer;
   try {
-    console.log("Starting Vite dev server...");
-    server = await createServer({
-      root: cwd,
-      server: { middlewareMode: true },
+    console.log("Starting Vite preview server...");
+    previewServer = await preview({
+      preview: {
+        port: 4173,
+      },
     });
 
-    const app = server.middlewares;
-    httpServer = http.createServer(app);
-
-    await new Promise((resolve) => {
-      httpServer.listen(PORT, () => {
-        console.log(`Server ready at ${HOST}`);
-        resolve();
-      });
-    });
+    const HOST = "http://localhost:4173";
 
     const browser = await puppeteer.launch({
       headless: true,
@@ -37,32 +26,30 @@ async function main() {
     const page = await browser.newPage();
 
     for (const route of routes) {
-      const url = HOST + (route === "/" ? "/" : route);
+      const url = HOST + route;
       console.log("Rendering", url);
-      try {
-        await page.goto(url, { waitUntil: "networkidle2" });
-        const html = await page.content();
-        const outDir = path.join(
-          cwd,
-          "dist",
-          route === "/" ? "" : route.replace(/^\//, ""),
-        );
-        fs.mkdirSync(outDir, { recursive: true });
-        fs.writeFileSync(path.join(outDir, "index.html"), html, "utf8");
-        console.log("✓ Wrote", path.join(outDir, "index.html"));
-      } catch (e) {
-        console.error("✗ Failed to render", url, ":", e.message);
-      }
+
+      await page.goto(url, { waitUntil: "networkidle0" });
+      const html = await page.content();
+
+      const outDir = path.join(
+        cwd,
+        "dist",
+        route === "/" ? "" : route.replace(/^\//, ""),
+      );
+
+      fs.mkdirSync(outDir, { recursive: true });
+      fs.writeFileSync(path.join(outDir, "index.html"), html, "utf8");
+      console.log("✓ Wrote", path.join(outDir, "index.html"));
     }
 
     await browser.close();
     console.log("✓ Prerender complete.");
-    httpServer.close();
   } catch (e) {
     console.error("✗ Error:", e.message);
     process.exitCode = 1;
   } finally {
-    if (server) await server.close();
+    if (previewServer) await previewServer.httpServer.close();
   }
 }
 
